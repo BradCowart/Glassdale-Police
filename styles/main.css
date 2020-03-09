@@ -1,0 +1,11 @@
+.criminallist{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  
+}
+
+.criminal {
+    padding:5px;
+    flex-basis: 25%;
+    border: dotted 1px #000000;
+}
