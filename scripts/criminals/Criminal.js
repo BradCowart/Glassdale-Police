@@ -1,4 +1,4 @@
-const Criminal = (criminal) => {
+export const Criminal = (criminal) => {
     return `
         <div class="criminal">
           <div>${criminal.name}</div>
@@ -11,6 +11,3 @@ const Criminal = (criminal) => {
         </div>
     `
 }
-
-
-export default Criminal

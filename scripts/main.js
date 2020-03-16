@@ -2,8 +2,10 @@
 //getOfficers()
 
 import { getCriminals } from "./criminals/CriminalProvider.js"
-import criminalList from "./criminals/CriminalList.js"
+import {CriminalList} from "./criminals/CriminalList.js"
 import { getConvictions } from "./convictions/ConvictionProvider.js"
 import ConvictionSelect from "./convictions/ConvictionSelect.js"
-getCriminals().then(criminalList)
+import NoteForm from "./notes/NoteForm.js"
+getCriminals().then(CriminalList)
 getConvictions().then(ConvictionSelect)
+NoteForm()
