@@ -1,7 +1,7 @@
 import { useCriminals } from "./CriminalProvider.js";
 import { Criminal } from "./Criminal.js";
 // Selecting the classes where the data will appear
-const contentTarget = document.querySelector(".criminallist")
+const contentTarget = document.querySelector(".criminalsContainer")
 const eventHub = document.querySelector(".container")
 
 //Set up a listener for the crime
