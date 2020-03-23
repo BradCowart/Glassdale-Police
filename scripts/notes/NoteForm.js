@@ -28,7 +28,6 @@ contentTarget.addEventListener("click", clickEvent => {
             criminal: criminalName,
             timestamp: Date.now()
         }
-
         // Change API state and application state
         saveNote(newNote)
     }

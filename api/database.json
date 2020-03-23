@@ -1,0 +1,16 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "noteText": "This is a possible suspect.",
+      "criminalId": 5,
+      "timestamp": 1584988144534
+    },
+    {
+      "id":2,
+      "noteText": "note", 
+      "criminalId": 1,
+      "timestamp": 1584988144534
+    }
+  ]
+}

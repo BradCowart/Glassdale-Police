@@ -1,43 +1,64 @@
-import { useCriminals } from "./CriminalProvider.js";
+import { useCriminals, getCriminals } from "./CriminalProvider.js";
 import { Criminal } from "./Criminal.js";
-// Selecting the classes where the data will appear
+
 const contentTarget = document.querySelector(".criminalsContainer")
 const eventHub = document.querySelector(".container")
+let youCanSeeMe = true
 
-//Set up a listener for the crime
-eventHub.addEventListener("crimeChosen", event => {
-    // Filter the list of criminals who committed the crime
+contentTarget.addEventListener("click", clickEvent => {
+    if (clickEvent.target.id.startsWith("associates--")) {
+        // Get the id of the criminal that was clicked
+        const [junk, criminalId] = clickEvent.target.id.split("--")
 
-    // Get the criminals from the data source
-    const criminals = useCriminals()
+        // Yell at the system that a known associates button was clicked
+        const showAssociatesEvent = new CustomEvent("knownAssociatesClicked", {
+            // Make sure to tell the system exactly which criminal button was clicked
+            detail: {
+                chosenCriminal: criminalId
+            }
+        })
 
-    // Get the crime this comes from ConvictionSelect
-    const theCrimeThatWasChosen = event.detail.chosenCrime
-
-    // Review criminals and determine if each one = selected crime
-    const guiltyCriminals = criminals.filter(criminal => {
-    // testing if the criminal = the crime if so return true    
-        if (criminal.conviction === theCrimeThatWasChosen) {
-            return true
-        }
-        return false
-    })
-
-    // Clear inner HTML of the criminal list
-    contentTarget.innerHTML = ""
-
-    // Build it up again
-    for (const singleCriminal of guiltyCriminals) {
-        contentTarget.innerHTML += Criminal(singleCriminal)
+        eventHub.dispatchEvent(showAssociatesEvent)
     }
 })
 
-// Make the function available for main.js
-export const CriminalList = () => {
-// Assign the data to variable ???
-    const criminals = useCriminals()
-// ????????
-    for (const singleCriminal of criminals) {
-        contentTarget.innerHTML += Criminal(singleCriminal)
+eventHub.addEventListener("witnessButtonClicked", customEvent => {
+    youCanSeeMe = !youCanSeeMe
+
+    youCanSeeMe
+        ? contentTarget.classList.remove("invisible")
+        : contentTarget.classList.add("invisible")
+})
+
+
+eventHub.addEventListener("crimeChosen", event => {
+    // What crime was chosen?
+    const theCrimeThatWasChosen = event.detail.chosenCrime
+
+    // Get the criminals
+    let criminalsToDisplay = useCriminals()
+
+    if (theCrimeThatWasChosen !== "0") {
+        // Filter the list of criminal who committed the crime
+        criminalsToDisplay = criminalsToDisplay.filter(criminal => {
+            if (criminal.conviction === theCrimeThatWasChosen) {
+                return true
+            }
+            return false
+        })
     }
+    render(criminalsToDisplay)
+})
+
+const render = criminalsToRender => {
+    contentTarget.innerHTML = criminalsToRender.map(
+        (criminalObject) => {
+            return Criminal(criminalObject)
+        }
+    ).join("")
+}
+
+export const CriminalList = () => {
+    const criminals = useCriminals()
+    render(criminals)
 }
