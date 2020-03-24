@@ -1,4 +1,6 @@
-import { saveNote } from "./NoteProvider.js"
+import { saveNote } from "./NotesProvider.js"
+import { useCriminals } from "../criminals/CriminalProvider.js"
+
 const contentTarget = document.querySelector(".noteFormContainer")
 const eventHub = document.querySelector(".container")
 
@@ -20,14 +22,15 @@ contentTarget.addEventListener("click", clickEvent => {
     if (clickEvent.target.id === "saveNote") {
 
         const noteText = document.querySelector("#noteText").value
-        const criminalName = document.querySelector("#criminal").value
+        const criminalId = document.querySelector("#criminalDropdown").value
 
         // Make a new object representation of a note
         const newNote = {
             noteText: noteText,
-            criminal: criminalName,
+            criminal: parseInt(criminalId),
             timestamp: Date.now()
         }
+
         // Change API state and application state
         saveNote(newNote)
     }
@@ -35,21 +38,30 @@ contentTarget.addEventListener("click", clickEvent => {
 
 const render = () => {
     contentTarget.classList.add("invisible")
+    const allCriminals = useCriminals()
+
     contentTarget.innerHTML = `
         <fieldset>
-            <label for="noteText">Note:</label>
-            <input type="text" id="noteText">
+            <label class="label label--notes" for="noteText">Note:</label>
+            <textarea id="noteText"></textarea>
         </fieldset>
         <fieldset>
-            <label for="criminal">Criminal:</label>
-            <input type="text" id="criminal">
+            <label class="label label--notes" for="criminal">Criminal:</label>
+            <select id="criminalDropdown">
+                <option value="0">Please choose a criminal...</option>
+                ${
+                    allCriminals.map(
+                        (currentCriminalObject) => {
+                            return `<option value="${currentCriminalObject.id}">${currentCriminalObject.name}</option>`
+                        }
+                    )
+                }
+            </select>
         </fieldset>
         <button id="saveNote">Save Note</button>
     `
 }
 
-const NoteForm = () => {
+export const NoteForm = () => {
     render()
 }
-
-export default NoteForm                       
